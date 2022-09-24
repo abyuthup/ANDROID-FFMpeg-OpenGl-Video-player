@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="simple player"
+            android:onClick="clickSimplePlayer"
+    />
+
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OpenGL Render a simple triangle"
+            android:onClick="clickSimpleTriangle"
+    />
+
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OpenGL Rendering simple texture maps"
+            android:onClick="clickSimpleTexture"
+    />
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OpenGL render video"
+            android:onClick="clickOpenGLPlayer"
+    />
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OpenGL Render multiple videos"
+            android:onClick="clickMultiOpenGLPlayer"
+    />
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="EGL render video"
+            android:onClick="clickEGLPlayer"
+    />
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Use FBO to achieve out-of-body effects"
+            android:onClick="clickSoulPlayer"
+    />
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="video hardcoded"
+            android:onClick="clickEncoder"
+    />
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="FFmpeg Information printing/video playback"
+            android:onClick="clickFFmpegInfo"
+    />
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="FFmpeg + OpenGL video playback"
+            android:onClick="clickFFmpegGLPlayer"
+    />
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="FFmpeg repackage"
+            android:onClick="clickFFmpegRepack"
+    />
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="FFmpeg coding"
+            android:onClick="clickFFmpegEncode"
+            />
+
+</LinearLayout>

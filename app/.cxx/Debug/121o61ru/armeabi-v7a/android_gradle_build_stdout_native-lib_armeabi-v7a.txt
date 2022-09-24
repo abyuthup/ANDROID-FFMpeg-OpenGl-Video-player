@@ -1,0 +1,13 @@
+ninja: Entering directory `/Users/abyuthup/StudioProjects/LearningVideo/app/.cxx/Debug/121o61ru/armeabi-v7a'
+[1/2] Building CXX object CMakeFiles/native-lib.dir/native-lib.cpp.o
+/Users/abyuthup/StudioProjects/LearningVideo/app/src/main/cpp/native-lib.cpp:29:27: warning: 'av_codec_next' is deprecated [-Wdeprecated-declarations]
+        AVCodec *c_temp = av_codec_next(NULL);
+                          ^
+/Users/abyuthup/StudioProjects/LearningVideo/app/src/main/cpp/ffmpeg/include/libavcodec/avcodec.h:4117:1: note: 'av_codec_next' has been explicitly marked deprecated here
+attribute_deprecated
+^
+/Users/abyuthup/StudioProjects/LearningVideo/app/src/main/cpp/ffmpeg/include/libavutil/attributes.h:94:49: note: expanded from macro 'attribute_deprecated'
+#    define attribute_deprecated __attribute__((deprecated))
+                                                ^
+1 warning generated.
+[2/2] Linking CXX shared library /Users/abyuthup/StudioProjects/LearningVideo/app/build/intermediates/cxx/Debug/121o61ru/obj/armeabi-v7a/libnative-lib.so

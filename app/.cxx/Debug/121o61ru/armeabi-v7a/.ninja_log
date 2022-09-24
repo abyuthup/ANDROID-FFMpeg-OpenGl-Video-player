@@ -1,0 +1,25 @@
+# ninja log v5
+3	623	1663280303	CMakeFiles/native-lib.dir/media/decoder/i_decode_state_cb.cpp.o	c6e3b81363d6e106
+13	626	1663280303	CMakeFiles/native-lib.dir/opengl/egl/egl_surface.cpp.o	d2eb5a5925993386
+11	632	1663280303	CMakeFiles/native-lib.dir/opengl/egl/egl_core.cpp.o	7155187aca036603
+1	653	1663280303	CMakeFiles/native-lib.dir/utils/timer.c.o	a5bd9f1ce6464f2d
+9	723	1663280303	CMakeFiles/native-lib.dir/media/render/video/native_render/native_render.cpp.o	cd5c032421b141ff
+8	763	1663280303	CMakeFiles/native-lib.dir/media/muxer/mp4_muxer.cpp.o	45b9ae128d50afad
+2	763	1663280303	CMakeFiles/native-lib.dir/media/muxer/ff_repack.cpp.o	58399b1516cd856f
+654	772	1663280303	CMakeFiles/native-lib.dir/opengl/drawer/proxy/drawer_proxy.cpp.o	ad6148ebb05fca74
+624	772	1663280303	CMakeFiles/native-lib.dir/opengl/drawer/drawer.cpp.o	d852febfc9bd8068
+632	819	1663280303	CMakeFiles/native-lib.dir/opengl/drawer/video_drawer.cpp.o	5a250d854b660c9a
+4	1095	1663280303	CMakeFiles/native-lib.dir/media/decoder/video/v_decoder.cpp.o	d1823726981bee81
+5	1110	1663280303	CMakeFiles/native-lib.dir/media/decoder/audio/a_decoder.cpp.o	b05988eca80e3940
+626	1178	1663280303	CMakeFiles/native-lib.dir/opengl/drawer/proxy/def_drawer_proxy_impl.cpp.o	9e41b5ef1d1704a5
+7	1221	1663280303	CMakeFiles/native-lib.dir/media/encoder/audio/a_encoder.cpp.o	b364a8c0546a93a1
+2	1281	1663280303	CMakeFiles/native-lib.dir/media/player/def_player/player.cpp.o	e87c1f485709ed6a
+7	1282	1663280303	CMakeFiles/native-lib.dir/media/encoder/video/v_encoder.cpp.o	a89c4d5b683af82b
+2	1298	1663280303	CMakeFiles/native-lib.dir/media/player/gl_player/gl_player.cpp.o	f7281dc378352613
+9	1299	1663280303	CMakeFiles/native-lib.dir/media/render/video/opengl_render/opengl_render.cpp.o	56722cb6c1131673
+3	1319	1663280303	CMakeFiles/native-lib.dir/media/decoder/base_decoder.cpp.o	f5c5e5d199d79d7
+723	1481	1663280303	CMakeFiles/native-lib.dir/media/synthesizer/synthesizer.cpp.o	d7a463177e2ebc18
+11	1508	1663280303	CMakeFiles/native-lib.dir/media/render/audio/opensl_render.cpp.o	f7ce8624f6796896
+6	1510	1663280304	CMakeFiles/native-lib.dir/media/encoder/base_encoder.cpp.o	2fde0de19257599
+6	830	1663280449	CMakeFiles/native-lib.dir/native-lib.cpp.o	366ae014e6773c41
+831	1007	1663280449	/Users/abyuthup/StudioProjects/LearningVideo/app/build/intermediates/cxx/Debug/121o61ru/obj/armeabi-v7a/libnative-lib.so	2bf38cb52df2db1f

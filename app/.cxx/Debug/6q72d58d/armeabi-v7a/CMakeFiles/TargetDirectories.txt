@@ -1,0 +1,3 @@
+/Users/abyuthup/StudioProjects/learningvideoaby/app/.cxx/Debug/6q72d58d/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/Users/abyuthup/StudioProjects/learningvideoaby/app/.cxx/Debug/6q72d58d/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/abyuthup/StudioProjects/learningvideoaby/app/.cxx/Debug/6q72d58d/armeabi-v7a/CMakeFiles/native-lib.dir

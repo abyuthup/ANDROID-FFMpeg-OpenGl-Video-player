@@ -1,0 +1,2 @@
+ninja: Entering directory `/Users/abyuthup/StudioProjects/learningvideoaby/app/.cxx/Debug/6q72d58d/armeabi-v7a'
+ninja: no work to do.

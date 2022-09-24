@@ -1,0 +1,7 @@
+Executable : /Users/abyuthup/Library/Android/sdk/cmake/3.10.2.4988404/bin/ninja
+arguments : 
+-C
+/Users/abyuthup/StudioProjects/LearningVideo/app/.cxx/Debug/121o61ru/armeabi-v7a
+native-lib
+jvmArgs : 
+
