@@ -6,7 +6,7 @@ import com.cxp.learningvideo.media.IDecoderStateListener
 
 
 /**
- * 默认解码状态监听器
+ * Default decode status listener
  *
  * @author Chen Xiaoping (562818444@qq.com)
  * @since LearningVideo

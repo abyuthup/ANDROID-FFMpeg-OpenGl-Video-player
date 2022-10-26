@@ -5,7 +5,7 @@ import java.nio.ByteBuffer
 
 
 /**
- * 一帧数据
+ * 一frame data
  *
  * @author Chen Xiaoping (562818444@qq.com)
  * @since LearningVideo

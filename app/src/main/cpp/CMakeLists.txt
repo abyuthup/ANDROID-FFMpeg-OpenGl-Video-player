@@ -159,7 +159,7 @@ add_library( # Sets the name of the library.
         ${CMAKE_SOURCE_DIR}/media/synthesizer/synthesizer.cpp
 )
 
-# 指定编译目标库时，cmake要链接的库
+# Specify the library to be linked by cmake when compiling the target library
 target_link_libraries(
 
         # 指定目标库，native-lib 是在上面 add_library 中配置的目标库

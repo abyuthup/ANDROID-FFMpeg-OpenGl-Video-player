@@ -2,7 +2,7 @@ package com.cxp.learningvideo.media
 
 
 /**
- * 解码状态
+ * decoding state
  *
  * @author Chen Xiaoping (562818444@qq.com)
  * @since LearningVideo
@@ -11,16 +11,16 @@ package com.cxp.learningvideo.media
  *
  */
 enum class DecodeState {
-    /**开始状态*/
+    /**Start state*/
     START,
-    /**解码中*/
+    /**Decoding*/
     DECODING,
-    /**解码暂停*/
+    /**Decoding pause*/
     PAUSE,
-    /**正在快进*/
+    /**Fast forwarding */
     SEEKING,
-    /**解码完成*/
+    /**Decoding complete*/
     FINISH,
-    /**解码器释放*/
+    /**Decoder release*/
     STOP
 }

@@ -2,7 +2,7 @@ package com.cxp.learningvideo.media
 
 
 /**
- * 默认实现的解码监听器
+ * Decoding listener implemented by default
  *
  * @author Chen Xiaoping (562818444@qq.com)
  * @since LearningVideo

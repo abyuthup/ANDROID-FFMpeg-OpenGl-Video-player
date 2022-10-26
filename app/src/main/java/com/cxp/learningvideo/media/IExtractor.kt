@@ -5,8 +5,7 @@ import java.nio.ByteBuffer
 
 
 /**
- * 音视频分离器定义
- *
+ * Definition of audio and video splitter *
  * @author Chen Xiaoping (562818444@qq.com)
  * @since LearningVideo
  * @version LearningVideo
@@ -18,26 +17,22 @@ interface IExtractor {
     fun getFormat(): MediaFormat?
 
     /**
-     * 读取音视频数据
-     */
+     * Read audio and video data     */
     fun readBuffer(byteBuffer: ByteBuffer): Int
 
     /**
-     * 获取当前帧时间
-     */
+     * Get the current frame time     */
     fun getCurrentTimestamp(): Long
 
     fun getSampleFlag(): Int
 
     /**
-     * Seek到指定位置，并返回实际帧的时间戳
-     */
+     * Seek to the specified position and return the timestamp of the actual frame     */
     fun seek(pos: Long): Long
 
     fun setStartPos(pos: Long)
 
     /**
-     * 停止读取数据
-     */
+     * stop reading data     */
     fun stop()
 }

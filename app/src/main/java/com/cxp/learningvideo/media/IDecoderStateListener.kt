@@ -2,8 +2,7 @@ package com.cxp.learningvideo.media
 
 
 /**
- * 解码状态回调接口
- *
+ * Decoding status callback interface *
  * @author Chen Xiaoping (562818444@qq.com)
  * @since LearningVideo
  * @version LearningVideo

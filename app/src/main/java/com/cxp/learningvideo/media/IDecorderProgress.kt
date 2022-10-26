@@ -2,8 +2,7 @@ package com.cxp.learningvideo.media
 
 
 /**
- * 解码进度
- *
+ * Decoding progress *
  * @author Chen Xiaoping (562818444@qq.com)
  * @since LearningVideo
  * @version LearningVideo
@@ -12,12 +11,10 @@ package com.cxp.learningvideo.media
  */
 interface IDecoderProgress {
     /**
-     * 视频宽高回调
-     */
+     * Video width and height callback     */
     fun videoSizeChange(width: Int, height: Int, rotationAngle: Int)
 
     /**
-     * 视频播放进度回调
-     */
+     * Video playback progress callback     */
     fun videoProgressChange(pos: Long)
 }

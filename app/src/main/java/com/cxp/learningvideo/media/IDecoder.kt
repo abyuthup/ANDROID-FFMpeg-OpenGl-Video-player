@@ -4,7 +4,7 @@ import android.media.MediaFormat
 
 
 /**
- * 解码器定义
+ * Decoder Definition
  *
  * @author Chen Xiaoping (562818444@qq.com)
  * @since LearningVideo
@@ -15,105 +15,102 @@ import android.media.MediaFormat
 interface IDecoder: Runnable {
 
     /**
-     * 暂停解码
+     * Pause decoding
      */
     fun pause()
 
     /**
-     * 继续解码
+     * continue decoding
      */
     fun goOn()
 
     /**
-     * 跳转到指定位置
-     * 并返回实际帧的时间
+     * Jump to the specified position
+     * and returns the actual frame time
      *
-     * @param pos: 毫秒
-     * @return 实际时间戳，单位：毫秒
+     * @param pos: milliseconds
+     * @return the actual timestamp in milliseconds
      */
     fun seekTo(pos: Long): Long
 
     /**
-     * 跳转到指定位置,并播放
-     * 并返回实际帧的时间
+     * Jump to the specified position and play
+     * and returns the actual frame time
      *
-     * @param pos: 毫秒
-     * @return 实际时间戳，单位：毫秒
+     * @param pos: milliseconds
+     * @return the actual timestamp in milliseconds
      */
     fun seekAndPlay(pos: Long): Long
 
     /**
-     * 停止解码
+     * stop decoding
      */
     fun stop()
 
     /**
-     * 是否正在解码
+     * is decoding
      */
     fun isDecoding(): Boolean
 
     /**
-     * 是否正在快进
+     *fast forwarding
      */
     fun isSeeking(): Boolean
 
     /**
-     * 是否停止解码
+     * whether to stop decoding
      */
     fun isStop(): Boolean
 
     /**
-     * 设置尺寸监听器
+     * set size listener
      */
     fun setSizeListener(l: IDecoderProgress)
 
     /**
-     * 设置状态监听器
+     * set state listener
      */
     fun setStateListener(l: IDecoderStateListener?)
 
     /**
-     * 获取视频宽
+     * get video width
      */
     fun getWidth(): Int
 
     /**
-     * 获取视频高
+     * get video high
      */
     fun getHeight(): Int
 
     /**
-     * 获取视频长度
+     * Get video length
      */
     fun getDuration(): Long
 
     /**
-     * 当前帧时间，单位：ms
-     */
+     * Current frame time, unit: ms     */
     fun getCurTimeStamp(): Long
 
     /**
-     * 获取视频旋转角度
+     * Get video rotation angle
      */
     fun getRotationAngle(): Int
 
     /**
-     * 获取音视频对应的格式参数
+     * Get the format parameters corresponding to the audio and video
      */
     fun getMediaFormat(): MediaFormat?
 
     /**
-     * 获取音视频对应的媒体轨道
+     * Get the media track corresponding to the audio and video
      */
     fun getTrack(): Int
 
     /**
-     * 获取解码的文件路径
-     */
+     * Get the decoded file path     */
     fun getFilePath(): String
 
     /**
-     * 无需音视频同步
-     */
+     * No need for audio and video synchronization     */
     fun withoutSync(): IDecoder
 }
