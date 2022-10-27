@@ -20,7 +20,7 @@ import java.nio.FloatBuffer
  */
 class VideoDrawer : IDrawer {
 
-    // 顶点坐标
+    // vertex coordinates
     private val mVertexCoors = floatArrayOf(
         -1f, -1f,
         1f, -1f,
@@ -28,7 +28,7 @@ class VideoDrawer : IDrawer {
         1f, 1f
     )
 
-    // 纹理坐标
+    // texture coordinates
     private val mTextureCoors = floatArrayOf(
         0f, 1f,
         1f, 1f,
@@ -47,18 +47,18 @@ class VideoDrawer : IDrawer {
 
     private var mSftCb: ((SurfaceTexture) -> Unit)? = null
 
-    //OpenGL程序ID
+    //OpenGL program ID
     private var mProgram: Int = -1
 
-    //矩阵变换接收者
+    //Matrix transformation receiver
     private var mVertexMatrixHandler: Int = -1
-    // 顶点坐标接收者
+    // vertex coordinate receiver
     private var mVertexPosHandler: Int = -1
-    // 纹理坐标接收者
+    // texture coordinate receiver
     private var mTexturePosHandler: Int = -1
-    // 纹理接收者
+    // texture receiver
     private var mTextureHandler: Int = -1
-    // 半透值接收者
+    // Translucent value receiver
     private var mAlphaHandler: Int = -1
 
     private lateinit var mVertexBuffer: FloatBuffer
@@ -69,14 +69,14 @@ class VideoDrawer : IDrawer {
     private var mAlpha = 1f
 
     init {
-        //【步骤1: 初始化顶点坐标】
+//[Step 1: Initialize vertex coordinates]
         initPos()
     }
 
     private fun initPos() {
         val bb = ByteBuffer.allocateDirect(mVertexCoors.size * 4)
         bb.order(ByteOrder.nativeOrder())
-        //将坐标数据转换为FloatBuffer，用以传入给OpenGL ES程序
+        //Convert coordinate data to FloatBuffer for passing to OpenGL ES program
         mVertexBuffer = bb.asFloatBuffer()
         mVertexBuffer.put(mVertexCoors)
         mVertexBuffer.position(0)
@@ -107,7 +107,7 @@ class VideoDrawer : IDrawer {
                         -mHeightRatio, mHeightRatio,
                         3f, 5f
                     )
-                } else {// 原始比例小于窗口比例，缩放高度度会导致高度超出，因此，高度以窗口为准，缩放宽度
+                } else {// The original scale is smaller than the window scale, scaling the height will cause the height to exceed, therefore, the height is subject to the window, and the scaling width
                     mWidthRatio = worldRatio / originRatio
                     Matrix.orthoM(
                         prjMatrix, 0,
@@ -125,7 +125,7 @@ class VideoDrawer : IDrawer {
                         -mHeightRatio, mHeightRatio,
                         3f, 5f
                     )
-                } else {// 原始比例小于窗口比例，缩放高度会导致高度超出，因此，高度以窗口为准，缩放宽度
+                } else {// The original scale is smaller than the window scale, scaling the height will cause the height to exceed, therefore, the height is based on the window, scaling the width
                     mWidthRatio = worldRatio / originRatio
                     Matrix.orthoM(
                         prjMatrix, 0,
@@ -136,7 +136,7 @@ class VideoDrawer : IDrawer {
                 }
             }
 
-            //设置相机位置
+            //Set camera position
             val viewMatrix = FloatArray(16)
             Matrix.setLookAtM(
                 viewMatrix, 0,
@@ -144,7 +144,7 @@ class VideoDrawer : IDrawer {
                 0f, 0f, 0f,
                 0f, 1.0f, 0f
             )
-            //计算变换矩阵
+            //Calculate the transformation matrix
             Matrix.multiplyMM(mMatrix, 0, prjMatrix, 0, viewMatrix, 0)
         }
     }
@@ -176,13 +176,13 @@ class VideoDrawer : IDrawer {
     override fun draw() {
         if (mTextureId != -1) {
             initDefMatrix()
-            //【步骤2: 创建、编译并启动OpenGL着色器】
+            //[Step 2: Create, compile and start OpenGL shader]
             createGLPrg()
-            //【步骤3: 激活并绑定纹理单元】
+            //[Step 3: Activate and bind texture units]
             activateTexture()
-            //【步骤4: 绑定图片到纹理单元】
+            //[Step 4: Bind the image to the texture unit]
             updateTexture()
-            //【步骤5: 开始渲染绘制】
+            //[Step 5: Start rendering and drawing]
             doDraw()
         }
     }
@@ -192,13 +192,13 @@ class VideoDrawer : IDrawer {
             val vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, getVertexShader())
             val fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, getFragmentShader())
 
-            //创建OpenGL ES程序，注意：需要在OpenGL渲染线程中创建，否则无法渲染
+            //Create an OpenGL ES program, note: it needs to be created in the OpenGL rendering thread, otherwise it cannot be rendered
             mProgram = GLES20.glCreateProgram()
-            //将顶点着色器加入到程序
+            //Add the vertex shader to the program
             GLES20.glAttachShader(mProgram, vertexShader)
-            //将片元着色器加入到程序中
+            //Add the fragment shader to the program
             GLES20.glAttachShader(mProgram, fragmentShader)
-            //连接到着色器程序
+            //connect to the shader program
             GLES20.glLinkProgram(mProgram)
 
             mVertexMatrixHandler = GLES20.glGetUniformLocation(mProgram, "uMatrix")
@@ -207,18 +207,18 @@ class VideoDrawer : IDrawer {
             mTexturePosHandler = GLES20.glGetAttribLocation(mProgram, "aCoordinate")
             mAlphaHandler = GLES20.glGetAttribLocation(mProgram, "alpha")
         }
-        //使用OpenGL程序
+        //Use OpenGL programs
         GLES20.glUseProgram(mProgram)
     }
 
     private fun activateTexture() {
-        //激活指定纹理单元
+        //Activate the specified texture unit
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
-        //绑定纹理ID到纹理单元
+        //Bind the texture ID to the texture unit
         GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mTextureId)
-        //将激活的纹理单元传递到着色器里面
+        // Pass the active texture unit into the shader
         GLES20.glUniform1i(mTextureHandler, 0)
-        //配置边缘过渡参数
+        //Configure edge transition parameters
         GLES20.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR.toFloat())
         GLES20.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR.toFloat())
         GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE)
@@ -230,15 +230,15 @@ class VideoDrawer : IDrawer {
     }
 
     private fun doDraw() {
-        //启用顶点的句柄
+        //handle to enable vertex
         GLES20.glEnableVertexAttribArray(mVertexPosHandler)
         GLES20.glEnableVertexAttribArray(mTexturePosHandler)
         GLES20.glUniformMatrix4fv(mVertexMatrixHandler, 1, false, mMatrix, 0)
-        //设置着色器参数， 第二个参数表示一个顶点包含的数据数量，这里为xy，所以为2
+        //Set the shader parameters, the second parameter represents the amount of data contained in a vertex, here is xy, so it is 2
         GLES20.glVertexAttribPointer(mVertexPosHandler, 2, GLES20.GL_FLOAT, false, 0, mVertexBuffer)
         GLES20.glVertexAttribPointer(mTexturePosHandler, 2, GLES20.GL_FLOAT, false, 0, mTextureBuffer)
         GLES20.glVertexAttrib1f(mAlphaHandler, mAlpha)
-        //开始绘制
+        //start drawing
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4)
     }
 
@@ -266,7 +266,7 @@ class VideoDrawer : IDrawer {
     }
 
     private fun getFragmentShader(): String {
-        //一定要加换行"\n"，否则会和下一行的precision混在一起，导致编译出错
+        //一Be sure to add a newline "\n", otherwise it will be mixed with the precision of the next line, resulting in a compilation error
         return "#extension GL_OES_EGL_image_external : require\n" +
                 "precision mediump float;" +
                 "varying vec2 vCoordinate;" +
@@ -279,9 +279,9 @@ class VideoDrawer : IDrawer {
     }
 
     private fun loadShader(type: Int, shaderCode: String): Int {
-        //根据type创建顶点着色器或者片元着色器
+        //Create vertex shader or fragment shader according to type
         val shader = GLES20.glCreateShader(type)
-        //将资源加入到着色器中，并编译
+        //Add the resource to the shader and compile it
         GLES20.glShaderSource(shader, shaderCode)
         GLES20.glCompileShader(shader)
 

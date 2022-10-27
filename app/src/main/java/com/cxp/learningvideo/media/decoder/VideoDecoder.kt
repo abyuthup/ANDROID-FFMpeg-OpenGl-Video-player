@@ -43,13 +43,13 @@ class VideoDecoder(path: String, sfv: SurfaceView?, surface: Surface?): BaseDeco
     override fun initSpecParams(format: MediaFormat) {
     }
 
-    override fun configCodec(codec: MediaCodec, format: MediaFormat): Boolean {
+    override fun configCodec(mediaCodec: MediaCodec, format: MediaFormat): Boolean {
         if (mSurface != null) {
-            codec.configure(format, mSurface , null, 0)
+            mediaCodec.configure(format, mSurface , null, 0)
             notifyDecode()
         } else if (mSurfaceView?.holder?.surface != null) {
             mSurface = mSurfaceView?.holder?.surface
-            configCodec(codec, format)
+            configCodec(mediaCodec, format)
         } else {
             mSurfaceView?.holder?.addCallback(object : SurfaceHolder.Callback2 {
                 override fun surfaceRedrawNeeded(holder: SurfaceHolder) {
@@ -63,7 +63,7 @@ class VideoDecoder(path: String, sfv: SurfaceView?, surface: Surface?): BaseDeco
 
                 override fun surfaceCreated(holder: SurfaceHolder) {
                     mSurface = holder.surface
-                    configCodec(codec, format)
+                    configCodec(mediaCodec, format)
                 }
             })
 

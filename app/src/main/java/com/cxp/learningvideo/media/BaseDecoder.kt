@@ -130,7 +130,9 @@ abstract class BaseDecoder(private val mFilePath: String): IDecoder {
                 }
 
                 //[Decoding step: 3. Pull the decoded data out of the buffer]
-                val index = pullBufferFromDecoder()
+                var index = 0
+
+                index = pullBufferFromDecoder()
                 if (index >= 0) {
                     // ---------【Audio and video synchronization】-------------
                     if (mSyncRender && mState == DecodeState.DECODING) {
@@ -228,11 +230,14 @@ abstract class BaseDecoder(private val mFilePath: String): IDecoder {
     }
 
     private fun pushBufferToDecoder(): Boolean {
+        //dequeueInputBuffer returns the index of an input buffer to be filled with valid data
         var inputBufferIndex = mCodec!!.dequeueInputBuffer(1000)
         var isEndOfStream = false
 
         if (inputBufferIndex >= 0) {
             val inputBuffer = mInputBuffers!![inputBufferIndex]
+
+            //copy the encoded data to input buffer and returns the total sample size copied to inputbuffer
             val sampleSize = mExtractor!!.readBuffer(inputBuffer)
 
             if (sampleSize < 0) {

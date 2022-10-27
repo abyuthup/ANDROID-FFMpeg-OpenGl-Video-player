@@ -6,7 +6,7 @@ import java.nio.ByteBuffer
 
 
 /**
- * 音视频分离器
+ * Audio and video splitter
  *
  * @author Chen Xiaoping (562818444@qq.com)
  * @since VideoEditor
@@ -17,22 +17,22 @@ import java.nio.ByteBuffer
 
 class MMExtractor(path: String?) {
 
-    /**音视频分离器*/
+    /**Audio and video splitter*/
     private var mExtractor: MediaExtractor? = null
 
-    /**音频通道索引*/
+    /**Audio channel index*/
     private var mAudioTrack = -1
 
-    /**视频通道索引*/
+    /**Video channel index*/
     private var mVideoTrack = -1
 
-    /**当前帧时间戳*/
+    /**Current frame timestamp*/
     private var mCurSampleTime: Long = 0
 
-    /**当前帧标志*/
+    /**Current frame flag*/
     private var mCurSampleFlag: Int = 0
 
-    /**开始解码时间点*/
+    /**Start decoding time point*/
     private var mStartPos: Long = 0
 
     init {
@@ -41,7 +41,7 @@ class MMExtractor(path: String?) {
     }
 
     /**
-     * 获取视频格式参数
+     * Get video format parameters
      */
     fun getVideoFormat(): MediaFormat? {
         for (i in 0 until mExtractor!!.trackCount) {
@@ -58,7 +58,7 @@ class MMExtractor(path: String?) {
     }
 
     /**
-     * 获取音频格式参数
+     * Get audio format parameters
      */
     fun getAudioFormat(): MediaFormat? {
         for (i in 0 until mExtractor!!.trackCount) {
@@ -75,19 +75,20 @@ class MMExtractor(path: String?) {
     }
 
     /**
-     * 读取视频数据
+     * read video data
      */
     fun readBuffer(byteBuffer: ByteBuffer): Int {
         byteBuffer.clear()
         selectSourceTrack()
+        //readSampleData retrieves the current encoded sample and store it in the byte buffer starting at the given offset.
         var readSampleCount = mExtractor!!.readSampleData(byteBuffer, 0)
         if (readSampleCount < 0) {
             return -1
         }
-        //记录当前帧的时间戳
+        //Record the timestamp of the current frame
         mCurSampleTime = mExtractor!!.sampleTime
         mCurSampleFlag = mExtractor!!.sampleFlags
-        //进入下一帧
+        //go to next frame
         mExtractor!!.advance()
         return readSampleCount
     }
