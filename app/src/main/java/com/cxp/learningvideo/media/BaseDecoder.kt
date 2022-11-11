@@ -16,7 +16,7 @@ import java.nio.ByteBuffer
  * @Datetime 2019-09-02 09:43
  *
  */
-abstract class BaseDecoder(private val mFilePath: String): IDecoder {
+abstract class BaseDecoder(private val mFilePath: String) : IDecoder {
 
     private val TAG = "BaseDecoder"
 
@@ -103,7 +103,8 @@ abstract class BaseDecoder(private val mFilePath: String): IDecoder {
             while (mIsRunning) {
                 if (mState != DecodeState.START &&
                     mState != DecodeState.DECODING &&
-                    mState != DecodeState.SEEKING) {
+                    mState != DecodeState.SEEKING
+                ) {
                     Log.i(TAG, "enter wait：$mState")
 
                     waitDecode()
@@ -114,7 +115,8 @@ abstract class BaseDecoder(private val mFilePath: String): IDecoder {
                 }
 
                 if (!mIsRunning ||
-                    mState == DecodeState.STOP) {
+                    mState == DecodeState.STOP
+                ) {
                     mIsRunning = false
                     break
                 }
@@ -136,6 +138,8 @@ abstract class BaseDecoder(private val mFilePath: String): IDecoder {
                 if (index >= 0) {
                     // ---------【Audio and video synchronization】-------------
                     if (mSyncRender && mState == DecodeState.DECODING) {
+                        /*When should time synchronization be performed without considering pause and resume?
+                        The answer is: after the data is decoded, before rendering.*/
                         sleepRender()
                     }
                     //[Decoding step: 4. Rendering]
@@ -188,7 +192,8 @@ abstract class BaseDecoder(private val mFilePath: String): IDecoder {
         //Initialize the data extractor
         mExtractor = initExtractor(mFilePath)
         if (mExtractor == null ||
-            mExtractor!!.getFormat() == null) {
+            mExtractor!!.getFormat() == null
+        ) {
             Log.w(TAG, "Could not parse file")
             return false
         }
@@ -247,13 +252,17 @@ abstract class BaseDecoder(private val mFilePath: String): IDecoder {
 
             if (sampleSize < 0) {
                 //If the data has been fetched, push the end of data flag：MediaCodec.BUFFER_FLAG_END_OF_STREAM
-                mCodec!!.queueInputBuffer(inputBufferIndex, 0, 0,
-                    0, MediaCodec.BUFFER_FLAG_END_OF_STREAM)
+                mCodec!!.queueInputBuffer(
+                    inputBufferIndex, 0, 0,
+                    0, MediaCodec.BUFFER_FLAG_END_OF_STREAM
+                )
                 isEndOfStream = true
             } else {
                 //queueInputBuffer to push data into the decoder.
-                mCodec!!.queueInputBuffer(inputBufferIndex, 0,
-                    sampleSize, mExtractor!!.getCurrentTimestamp(), 0)
+                mCodec!!.queueInputBuffer(
+                    inputBufferIndex, 0,
+                    sampleSize, mExtractor!!.getCurrentTimestamp(), 0
+                )
             }
         }
         return isEndOfStream
@@ -277,6 +286,12 @@ abstract class BaseDecoder(private val mFilePath: String): IDecoder {
     }
 
     private fun sleepRender() {
+
+        /*Before entering the decoding, obtain the current system time and store it in mStartTimeForSync.
+         After a frame of data is decoded, calculate the distance between the current system time
+         and mStartTimeForSync, that is, the time that has been played. If the PTS of the current
+         frame is greater than the lost time, enter sleep, otherwise Render directly.*/
+
         val passTime = System.currentTimeMillis() - mStartTimeForSync
         val curTime = getCurTimeStamp()
         if (curTime > passTime) {
@@ -432,8 +447,10 @@ abstract class BaseDecoder(private val mFilePath: String): IDecoder {
     /**
      * render
      */
-    abstract fun render(outputBuffer: ByteBuffer,
-                        bufferInfo: MediaCodec.BufferInfo)
+    abstract fun render(
+        outputBuffer: ByteBuffer,
+        bufferInfo: MediaCodec.BufferInfo
+    )
 
     /**
      * end decoding

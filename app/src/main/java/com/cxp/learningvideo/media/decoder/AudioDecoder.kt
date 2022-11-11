@@ -91,7 +91,9 @@ class AudioDecoder(path: String): BaseDecoder(path) {
             mAudioOutTempBuf = ShortArray(bufferInfo.size / 2)
         }
         outputBuffer.position(0)
+        //decoded data needs to be converted from ByteBuffer to ShortBuffer, and the length of the Short data type is halved.
         outputBuffer.asShortBuffer().get(mAudioOutTempBuf, 0, bufferInfo.size/2)
+        //write the decoded data into AudioTrack for playback
         mAudioTrack!!.write(mAudioOutTempBuf!!, 0, bufferInfo.size / 2)
     }
 
