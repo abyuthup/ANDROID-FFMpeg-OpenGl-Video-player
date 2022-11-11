@@ -139,6 +139,10 @@ abstract class BaseDecoder(private val mFilePath: String): IDecoder {
                         sleepRender()
                     }
                     //[Decoding step: 4. Rendering]
+
+                    //the rendering of the video does not require the client to render manually. It only needs to provide the drawing surface surface,
+                    //call releaseOutputBuffer, and set the two parameters to true. So, there is no need to do anything here
+
                     if (mSyncRender) {// No need to render if it's just for encoding and compositing a new video
                         render(mOutputBuffers!![index], mBufferInfo)
                     }
@@ -150,6 +154,7 @@ abstract class BaseDecoder(private val mFilePath: String): IDecoder {
                     mStateListener?.decodeOneFrame(this, frame)
 
                     //[Decoding step: 5. Release the output buffer]
+                    //The second parameter named render is used to decide whether to display this frame of data during video decoding
                     mCodec!!.releaseOutputBuffer(index, true)
 
                     if (mState == DecodeState.START) {
@@ -230,14 +235,14 @@ abstract class BaseDecoder(private val mFilePath: String): IDecoder {
     }
 
     private fun pushBufferToDecoder(): Boolean {
-        //dequeueInputBuffer returns the index of an input buffer to be filled with valid data
+        //Query whether there is an available input buffer, returning the buffer index. The parameter 1000 is to wait for 1000ms. If you fill in -1, it will wait indefinitely.
         var inputBufferIndex = mCodec!!.dequeueInputBuffer(1000)
         var isEndOfStream = false
 
         if (inputBufferIndex >= 0) {
             val inputBuffer = mInputBuffers!![inputBufferIndex]
 
-            //copy the encoded data to input buffer and returns the total sample size copied to inputbuffer
+            //copy the encoded data to input buffer and returns the total sample size copied to InputBuffer
             val sampleSize = mExtractor!!.readBuffer(inputBuffer)
 
             if (sampleSize < 0) {
@@ -246,6 +251,7 @@ abstract class BaseDecoder(private val mFilePath: String): IDecoder {
                     0, MediaCodec.BUFFER_FLAG_END_OF_STREAM)
                 isEndOfStream = true
             } else {
+                //queueInputBuffer to push data into the decoder.
                 mCodec!!.queueInputBuffer(inputBufferIndex, 0,
                     sampleSize, mExtractor!!.getCurrentTimestamp(), 0)
             }
@@ -253,6 +259,7 @@ abstract class BaseDecoder(private val mFilePath: String): IDecoder {
         return isEndOfStream
     }
 
+    //Pull the decoded data out of the buffer
     private fun pullBufferFromDecoder(): Int {
         // Query whether there is decoded data. When index >=0, it means the data is valid, and index is the buffer index
         var index = mCodec!!.dequeueOutputBuffer(mBufferInfo, 1000)
