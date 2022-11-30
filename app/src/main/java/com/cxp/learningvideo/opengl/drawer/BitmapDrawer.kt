@@ -19,6 +19,9 @@ import java.nio.FloatBuffer
  */
 class BitmapDrawer(private val mBitmap: Bitmap): IDrawer {
 
+    /*The default OpenGL coordinate system has its origin at its center.
+    As a result, the coordinates of the four corners
+    of our square, whose sides are two units long*/
     // 顶点坐标
     private val mVertexCoors = floatArrayOf(
         -1f, -1f,

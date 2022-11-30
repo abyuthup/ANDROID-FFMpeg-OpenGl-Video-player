@@ -30,6 +30,11 @@ class SimpleRender: GLSurfaceView.Renderer {
         for ((idx, drawer) in drawers.withIndex()) {
             drawer.setTextureID(textureIds[idx])
         }
+
+        drawers.forEachIndexed { index, drawer ->
+                drawer.setTextureID(textureIds[index])
+        }
+
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {

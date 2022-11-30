@@ -106,21 +106,20 @@ abstract class BaseDecoder(private val mFilePath: String) : IDecoder {
                     mState != DecodeState.SEEKING
                 ) {
                     Log.i(TAG, "enter wait：$mState")
-
                     waitDecode()
-
                     // ---------【Synchronization time correction】------------
-                    //Start time to restore synchronization, that is, remove the time waiting for loss
+                    /*after entering the pause, since the system time keeps going, and the mStartTimeForSync does
+                    not accumulate with the system time, when the playback is resumed, the
+                    mStartTimeForSync is added to the paused time period.
+                    ie,
+                    use the system time when resuming playback, minus the PTS of the frame currently
+                    being played, and the resulting value is mStartTimeForSync */
                     mStartTimeForSync = System.currentTimeMillis() - getCurTimeStamp()
                 }
-
-                if (!mIsRunning ||
-                    mState == DecodeState.STOP
-                ) {
+                if (!mIsRunning || mState == DecodeState.STOP) {
                     mIsRunning = false
                     break
                 }
-
                 if (mStartTimeForSync == -1L) {
                     mStartTimeForSync = System.currentTimeMillis()
                 }

@@ -52,12 +52,16 @@ class VideoDrawer : IDrawer {
 
     //Matrix transformation receiver
     private var mVertexMatrixHandler: Int = -1
+
     // vertex coordinate receiver
     private var mVertexPosHandler: Int = -1
+
     // texture coordinate receiver
     private var mTexturePosHandler: Int = -1
+
     // texture receiver
     private var mTextureHandler: Int = -1
+
     // Translucent value receiver
     private var mAlphaHandler: Int = -1
 
@@ -93,7 +97,8 @@ class VideoDrawer : IDrawer {
     private fun initDefMatrix() {
         if (mMatrix != null) return
         if (mVideoWidth != -1 && mVideoHeight != -1 &&
-            mWorldWidth != -1 && mWorldHeight != -1) {
+            mWorldWidth != -1 && mWorldHeight != -1
+        ) {
             mMatrix = FloatArray(16)
             var prjMatrix = FloatArray(16)
             val originRatio = mVideoWidth / mVideoHeight.toFloat()
@@ -101,6 +106,9 @@ class VideoDrawer : IDrawer {
             if (mWorldWidth > mWorldHeight) {
                 if (originRatio > worldRatio) {
                     mHeightRatio = originRatio / worldRatio
+                    /*  public static void orthoM(float[] m, int mOffset,
+                        float left, float right, float bottom, float top,
+                        float near, float far)  */
                     Matrix.orthoM(
                         prjMatrix, 0,
                         -mWidthRatio, mWidthRatio,
@@ -108,6 +116,7 @@ class VideoDrawer : IDrawer {
                         3f, 5f
                     )
                 } else {// The original scale is smaller than the window scale, scaling the height will cause the height to exceed, therefore, the height is subject to the window, and the scaling width
+                    //originRatio < worldRatio
                     mWidthRatio = worldRatio / originRatio
                     Matrix.orthoM(
                         prjMatrix, 0,
@@ -117,6 +126,7 @@ class VideoDrawer : IDrawer {
                     )
                 }
             } else {
+                //mWorldWidth < mWorldHeight
                 if (originRatio > worldRatio) {
                     mHeightRatio = originRatio / worldRatio
                     Matrix.orthoM(
@@ -138,6 +148,23 @@ class VideoDrawer : IDrawer {
 
             //Set camera position
             val viewMatrix = FloatArray(16)
+            /**
+             * Defines a viewing transformation in terms of an eye point, a center of
+             * view, and an up vector.
+             *
+             * @param rm returns the result
+             * @param rmOffset index into rm where the result matrix starts
+             * @param eyeX eye point X
+             * @param eyeY eye point Y
+             * @param eyeZ eye point Z
+             * @param centerX center of view X
+             * @param centerY center of view Y
+             * @param centerZ center of view Z
+             * @param upX up vector X
+             * @param upY up vector Y
+             * @param upZ up vector Z
+             */
+
             Matrix.setLookAtM(
                 viewMatrix, 0,
                 0f, 0f, 5.0f,
@@ -215,14 +242,31 @@ class VideoDrawer : IDrawer {
         //Activate the specified texture unit
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
         //Bind the texture ID to the texture unit
+        //replace all ordinary texture units with extended texture units
         GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mTextureId)
         // Pass the active texture unit into the shader
         GLES20.glUniform1i(mTextureHandler, 0)
         //Configure edge transition parameters
-        GLES20.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR.toFloat())
-        GLES20.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR.toFloat())
-        GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE)
-        GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE)
+        GLES20.glTexParameterf(
+            GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
+            GLES20.GL_TEXTURE_MIN_FILTER,
+            GLES20.GL_LINEAR.toFloat()
+        )
+        GLES20.glTexParameterf(
+            GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
+            GLES20.GL_TEXTURE_MAG_FILTER,
+            GLES20.GL_LINEAR.toFloat()
+        )
+        GLES20.glTexParameteri(
+            GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
+            GLES20.GL_TEXTURE_WRAP_S,
+            GLES20.GL_CLAMP_TO_EDGE
+        )
+        GLES20.glTexParameteri(
+            GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
+            GLES20.GL_TEXTURE_WRAP_T,
+            GLES20.GL_CLAMP_TO_EDGE
+        )
     }
 
     private fun updateTexture() {
@@ -236,7 +280,14 @@ class VideoDrawer : IDrawer {
         GLES20.glUniformMatrix4fv(mVertexMatrixHandler, 1, false, mMatrix, 0)
         //Set the shader parameters, the second parameter represents the amount of data contained in a vertex, here is xy, so it is 2
         GLES20.glVertexAttribPointer(mVertexPosHandler, 2, GLES20.GL_FLOAT, false, 0, mVertexBuffer)
-        GLES20.glVertexAttribPointer(mTexturePosHandler, 2, GLES20.GL_FLOAT, false, 0, mTextureBuffer)
+        GLES20.glVertexAttribPointer(
+            mTexturePosHandler,
+            2,
+            GLES20.GL_FLOAT,
+            false,
+            0,
+            mTextureBuffer
+        )
         GLES20.glVertexAttrib1f(mAlphaHandler, mAlpha)
         //start drawing
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4)
@@ -267,6 +318,17 @@ class VideoDrawer : IDrawer {
 
     private fun getFragmentShader(): String {
         //一Be sure to add a newline "\n", otherwise it will be mixed with the precision of the next line, resulting in a compilation error
+
+        /*
+        #extension GL_OES_EGL_image_external : require
+
+        We already know that the video image color space is YUV,
+        and to display it on the screen, the image is RGB. Therefore,
+        to render the video image to the screen, YUV must be converted to RGB.
+        Extending the texture does this transformation.*/
+
+        /*texture unit in the fourth row has also been replaced with an extended texture unit.*/
+
         return "#extension GL_OES_EGL_image_external : require\n" +
                 "precision mediump float;" +
                 "varying vec2 vCoordinate;" +
@@ -289,7 +351,7 @@ class VideoDrawer : IDrawer {
     }
 
     fun translate(dx: Float, dy: Float) {
-        Matrix.translateM(mMatrix, 0, dx*mWidthRatio*2, -dy*mHeightRatio*2, 0f)
+        Matrix.translateM(mMatrix, 0, dx * mWidthRatio * 2, -dy * mHeightRatio * 2, 0f)
     }
 
     fun scale(sx: Float, sy: Float) {

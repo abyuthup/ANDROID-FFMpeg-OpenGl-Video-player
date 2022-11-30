@@ -45,7 +45,18 @@ class MP4Repack(path: String) {
             if (audioFormat != null) {
                 var size = mAExtractor.readBuffer(buffer)
                 while (size > 0) {
-                    bufferInfo.set(0, size, mAExtractor.getCurrentTimestamp(), mAExtractor.getSampleFlag())
+                    /*The first is offset, usually 0,
+                    the second is the data size, which is the data size of the current frame extracted by Extractor, and the
+                    third is the timestamp corresponding to the current frame. This timestamp is very important and affects
+                    whether the video can be played normally or not. Obtained through Extractor The
+                    fourth is the current frame type, such as video I/P/B frames, which can also be obtained through Extractor
+*/
+                    bufferInfo.set(
+                        0,
+                        size,
+                        mAExtractor.getCurrentTimestamp(),
+                        mAExtractor.getSampleFlag()
+                    )
                     mMuxer.writeAudioData(buffer, bufferInfo)
                     size = mAExtractor.readBuffer(buffer)
                 }
@@ -53,7 +64,12 @@ class MP4Repack(path: String) {
             if (videoFormat != null) {
                 var size = mVExtractor.readBuffer(buffer)
                 while (size > 0) {
-                    bufferInfo.set(0, size, mVExtractor.getCurrentTimestamp(), mVExtractor.getSampleFlag())
+                    bufferInfo.set(
+                        0,
+                        size,
+                        mVExtractor.getCurrentTimestamp(),
+                        mVExtractor.getSampleFlag()
+                    )
                     mMuxer.writeVideoData(buffer, bufferInfo)
                     size = mVExtractor.readBuffer(buffer)
                 }
