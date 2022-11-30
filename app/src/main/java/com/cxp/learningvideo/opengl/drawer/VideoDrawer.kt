@@ -165,6 +165,7 @@ class VideoDrawer : IDrawer {
              * @param upZ up vector Z
              */
 
+
             Matrix.setLookAtM(
                 viewMatrix, 0,
                 0f, 0f, 5.0f,
