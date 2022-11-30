@@ -148,21 +148,10 @@ class VideoDrawer : IDrawer {
 
             //Set camera position
             val viewMatrix = FloatArray(16)
-            /**
-             * Defines a viewing transformation in terms of an eye point, a center of
-             * view, and an up vector.
-             *
-             * @param rm returns the result
-             * @param rmOffset index into rm where the result matrix starts
-             * @param eyeX eye point X
-             * @param eyeY eye point Y
-             * @param eyeZ eye point Z
-             * @param centerX center of view X
-             * @param centerY center of view Y
-             * @param centerZ center of view Z
-             * @param upX up vector X
-             * @param upY up vector Y
-             * @param upZ up vector Z
+            /*
+            (eyeX, eyeY, eyeZ) determines the position of the camera
+            (upX, upY, upZ) determines the direction of the camera
+            (centerX, centerY, centerZ) is the origin of the screen, generally (0, 0, 0).
              */
 
             Matrix.setLookAtM(
